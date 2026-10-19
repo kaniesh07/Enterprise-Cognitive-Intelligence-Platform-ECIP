@@ -1,0 +1,445 @@
+[
+ {
+  "id": "hb-01",
+  "question": "How many days of paid annual leave do full-time employees get?",
+  "ground_truth": "24 days of paid annual leave per calendar year.",
+  "must_contain": [
+   "24"
+  ],
+  "relevant_docs": [
+   "Acme_Employee_Handbook"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "hb-02",
+  "question": "How much unused annual leave can be carried over, and when does the rest expire?",
+  "ground_truth": "Up to 5 days can be carried over; the remaining balance expires on March 31.",
+  "must_contain": [
+   "5",
+   "March 31"
+  ],
+  "relevant_docs": [
+   "Acme_Employee_Handbook"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "hb-03",
+  "question": "How many days of paid sick leave are employees given each year?",
+  "ground_truth": "12 days of paid sick leave per year.",
+  "must_contain": [
+   "12"
+  ],
+  "relevant_docs": [
+   "Acme_Employee_Handbook"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "hb-04",
+  "question": "When is a medical certificate required for sick leave?",
+  "ground_truth": "For absences longer than 3 consecutive days.",
+  "must_contain": [
+   "3"
+  ],
+  "relevant_docs": [
+   "Acme_Employee_Handbook"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "hb-05",
+  "question": "How long is parental leave for the primary caregiver?",
+  "ground_truth": "26 weeks fully paid.",
+  "must_contain": [
+   "26"
+  ],
+  "relevant_docs": [
+   "Acme_Employee_Handbook"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "hb-06",
+  "question": "How many days per week can employees work remotely?",
+  "ground_truth": "Up to 3 days per week with manager approval.",
+  "must_contain": [
+   "3"
+  ],
+  "relevant_docs": [
+   "Acme_Employee_Handbook"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "hb-07",
+  "question": "What are the core collaboration hours for remote work?",
+  "ground_truth": "11:00 to 16:00 IST.",
+  "must_contain": [
+   "11",
+   "16"
+  ],
+  "relevant_docs": [
+   "Acme_Employee_Handbook"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "hb-08",
+  "question": "How much is the home-office stipend?",
+  "ground_truth": "A one-time stipend of INR 25,000.",
+  "must_contain": [
+   "25000"
+  ],
+  "relevant_docs": [
+   "Acme_Employee_Handbook"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "hb-09",
+  "question": "Within how many days must expenses be submitted, and through which portal?",
+  "ground_truth": "Within 30 days through the Expensify portal.",
+  "must_contain": [
+   "30",
+   "Expensify"
+  ],
+  "relevant_docs": [
+   "Acme_Employee_Handbook"
+  ],
+  "expected_mode": "grounded",
+  "intent": "procedural"
+ },
+ {
+  "id": "hb-10",
+  "question": "Who must approve purchases above INR 50,000?",
+  "ground_truth": "A department head must give prior approval.",
+  "must_contain": [
+   "department head"
+  ],
+  "relevant_docs": [
+   "Acme_Employee_Handbook"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "it-01",
+  "question": "What is the minimum password length?",
+  "ground_truth": "At least 14 characters.",
+  "must_contain": [
+   "14"
+  ],
+  "relevant_docs": [
+   "IT_Security_Policy",
+   "Acme_Employee_Handbook"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "it-02",
+  "question": "How often do passwords have to be rotated?",
+  "ground_truth": "Every 180 days.",
+  "must_contain": [
+   "180"
+  ],
+  "relevant_docs": [
+   "IT_Security_Policy",
+   "Acme_Employee_Handbook"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "it-03",
+  "question": "How quickly must a lost or stolen laptop be reported?",
+  "ground_truth": "To the IT helpdesk within 24 hours.",
+  "must_contain": [
+   "24"
+  ],
+  "relevant_docs": [
+   "IT_Security_Policy"
+  ],
+  "expected_mode": "grounded",
+  "intent": "procedural"
+ },
+ {
+  "id": "it-04",
+  "question": "Where and how fast should suspected phishing emails be reported?",
+  "ground_truth": "To security@acme.example within one hour.",
+  "must_contain": [
+   "one hour|1 hour|60 minutes"
+  ],
+  "relevant_docs": [
+   "IT_Security_Policy",
+   "Acme_Employee_Handbook"
+  ],
+  "expected_mode": "grounded",
+  "intent": "procedural"
+ },
+ {
+  "id": "it-05",
+  "question": "How is customer data classified, and can it be stored on USB drives?",
+  "ground_truth": "Customer data is Confidential and must never be stored on USB drives.",
+  "must_contain": [
+   "confidential"
+  ],
+  "relevant_docs": [
+   "IT_Security_Policy"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "tr-01",
+  "question": "In which class must domestic flights be booked?",
+  "ground_truth": "Economy class, through the company travel desk.",
+  "must_contain": [
+   "economy"
+  ],
+  "relevant_docs": [
+   "Travel_Policy"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "tr-02",
+  "question": "What is the daily meal allowance in metro cities?",
+  "ground_truth": "INR 2,500 per day.",
+  "must_contain": [
+   "2500"
+  ],
+  "relevant_docs": [
+   "Travel_Policy"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "tr-03",
+  "question": "What is the maximum hotel rate per night in non-metro cities?",
+  "ground_truth": "INR 6,000 per night.",
+  "must_contain": [
+   "6000"
+  ],
+  "relevant_docs": [
+   "Travel_Policy"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "tr-04",
+  "question": "Who approves international travel and how far in advance?",
+  "ground_truth": "A vice president, at least 21 days in advance.",
+  "must_contain": [
+   "vice president|vp",
+   "21"
+  ],
+  "relevant_docs": [
+   "Travel_Policy"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "tr-05",
+  "question": "and for other cities?",
+  "history": [
+   {
+    "role": "user",
+    "content": "What is the daily meal allowance in metro cities?"
+   },
+   {
+    "role": "assistant",
+    "content": "It is INR 2,500 per day in metro cities."
+   }
+  ],
+  "ground_truth": "INR 1,800 per day in other cities.",
+  "must_contain": [
+   "1800"
+  ],
+  "relevant_docs": [
+   "Travel_Policy"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "sa-01",
+  "question": "Which region had the highest revenue in Q2?",
+  "ground_truth": "South, with 135 crore.",
+  "must_contain": [
+   "south"
+  ],
+  "relevant_docs": [
+   "Sales_Q1_Q2"
+  ],
+  "expected_mode": "grounded",
+  "intent": "analytical"
+ },
+ {
+  "id": "sa-02",
+  "question": "What was the North region's growth percentage in Q2?",
+  "ground_truth": "3.1 percent.",
+  "must_contain": [
+   "3.1"
+  ],
+  "relevant_docs": [
+   "Sales_Q1_Q2"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "web-01",
+  "question": "What is the flight time of the SkyMapper X2 drone?",
+  "ground_truth": "55 minutes.",
+  "must_contain": [
+   "55"
+  ],
+  "relevant_docs": [
+   "drone"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "web-02",
+  "question": "When was Nimbus Labs founded and how many employees does it have?",
+  "ground_truth": "Founded in 2019; 42 employees.",
+  "must_contain": [
+   "2019",
+   "42"
+  ],
+  "relevant_docs": [
+   "about"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "web-03",
+  "question": "Where is the Nimbus Labs office located?",
+  "ground_truth": "Guindy, Chennai.",
+  "must_contain": [
+   "guindy"
+  ],
+  "relevant_docs": [
+   "about"
+  ],
+  "expected_mode": "grounded",
+  "intent": "factual"
+ },
+ {
+  "id": "ch-01",
+  "question": "What is the capital of Japan?",
+  "ground_truth": "Tokyo.",
+  "must_contain": [
+   "tokyo"
+  ],
+  "relevant_docs": [],
+  "expected_mode": "chat",
+  "intent": "factual"
+ },
+ {
+  "id": "ch-02",
+  "question": "Who wrote Romeo and Juliet?",
+  "ground_truth": "William Shakespeare.",
+  "must_contain": [
+   "shakespeare"
+  ],
+  "relevant_docs": [],
+  "expected_mode": "chat",
+  "intent": "factual"
+ },
+ {
+  "id": "ch-03",
+  "question": "At what temperature does water boil at sea level in Celsius?",
+  "ground_truth": "100 degrees Celsius.",
+  "must_contain": [
+   "100"
+  ],
+  "relevant_docs": [],
+  "expected_mode": "chat",
+  "intent": "factual"
+ },
+ {
+  "id": "ch-04",
+  "question": "What is 12 multiplied by 12?",
+  "ground_truth": "144.",
+  "must_contain": [
+   "144"
+  ],
+  "relevant_docs": [],
+  "expected_mode": "chat",
+  "intent": "factual"
+ },
+ {
+  "id": "ch-05",
+  "question": "How do you say hello in French?",
+  "ground_truth": "Bonjour.",
+  "must_contain": [
+   "bonjour"
+  ],
+  "relevant_docs": [],
+  "expected_mode": "chat",
+  "intent": "factual"
+ },
+ {
+  "id": "ch-06",
+  "question": "Write a short haiku about the rain.",
+  "ground_truth": "",
+  "must_contain": [],
+  "relevant_docs": [],
+  "expected_mode": "chat",
+  "intent": "creative"
+ },
+ {
+  "id": "ch-07",
+  "question": "Explain what an API is in one sentence.",
+  "ground_truth": "An interface that lets software programs communicate.",
+  "must_contain": [],
+  "relevant_docs": [],
+  "expected_mode": "chat",
+  "intent": "factual"
+ },
+ {
+  "id": "st-01",
+  "question": "hi",
+  "ground_truth": "",
+  "must_contain": [],
+  "relevant_docs": [],
+  "expected_mode": "instant",
+  "intent": "conversational"
+ },
+ {
+  "id": "st-02",
+  "question": "thanks!",
+  "ground_truth": "",
+  "must_contain": [],
+  "relevant_docs": [],
+  "expected_mode": "instant",
+  "intent": "conversational"
+ },
+ {
+  "id": "st-03",
+  "question": "who are you?",
+  "ground_truth": "",
+  "must_contain": [],
+  "relevant_docs": [],
+  "expected_mode": "instant",
+  "intent": "conversational"
+ }
+]

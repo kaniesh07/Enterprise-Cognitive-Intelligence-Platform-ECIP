@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+.pytest_cache/
+.ruff_cache/
+data/chroma/*
+data/processed/*
+data/raw/*
+!data/**/.gitkeep
+models/
+evaluation/results/*
+!evaluation/results/.gitkeep
+!evaluation/results/EVALUATION_REPORT.md
+!evaluation/results/run_*

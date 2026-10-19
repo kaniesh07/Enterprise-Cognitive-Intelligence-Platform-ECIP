@@ -1,0 +1,14 @@
+.git
+.venv
+venv
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+.env
+data/chroma/*
+data/processed/*
+data/raw/*
+models/
+evaluation/results/*
+*.zip

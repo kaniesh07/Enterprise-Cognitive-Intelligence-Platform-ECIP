@@ -1,0 +1,1569 @@
+{
+  "api_evaluation": {
+    "config": {
+      "api": "http://127.0.0.1:8000",
+      "top_k": 4,
+      "model": "tinyllama-chat",
+      "llm_provider": "ollama",
+      "embeddings": "onnx-package",
+      "vectordb": "embedded",
+      "dataset": "/home/claude/src/ecip/evaluation/datasets/eval_set.json",
+      "n_items": 35
+    },
+    "summary": {
+      "n": 35,
+      "routing_accuracy": 0.9714,
+      "routing_confusion": {
+        "grounded": {
+          "grounded": 25
+        },
+        "chat": {
+          "chat": 6,
+          "grounded": 1
+        },
+        "instant": {
+          "instant": 3
+        }
+      },
+      "retrieval": {
+        "n": 25,
+        "top_k": 4,
+        "hit@1": 0.96,
+        "hit@4": 1.0,
+        "mrr": 0.98,
+        "ndcg@4": 0.9534,
+        "context_precision": 0.5
+      },
+      "answer_accuracy_all": 0.6333,
+      "citation_accuracy": 0.96,
+      "faithfulness_mean_grounded": 0.76,
+      "faithfulness_when_correct": 0.8039,
+      "faithfulness_when_wrong": 0.6666,
+      "errors": 0,
+      "by_expected_mode": {
+        "grounded": {
+          "n": 25,
+          "routing_accuracy": 1.0,
+          "answer_accuracy": 0.68,
+          "keyword_recall": 0.68,
+          "ttft_p50_s": 5.391,
+          "ttft_p95_s": 14.144,
+          "total_p50_s": 9.308,
+          "total_p95_s": 20.072,
+          "tokens_mean": 391.48
+        },
+        "chat": {
+          "n": 7,
+          "routing_accuracy": 0.8571,
+          "answer_accuracy": 0.4,
+          "keyword_recall": 0.4,
+          "ttft_p50_s": 1.206,
+          "ttft_p95_s": 27.262,
+          "total_p50_s": 4.853,
+          "total_p95_s": 29.162,
+          "tokens_mean": 219.1429
+        },
+        "instant": {
+          "n": 3,
+          "routing_accuracy": 1.0,
+          "answer_accuracy": null,
+          "keyword_recall": null,
+          "ttft_p50_s": 0.002,
+          "ttft_p95_s": 0.002,
+          "total_p50_s": 0.002,
+          "total_p95_s": 0.003,
+          "tokens_mean": 0.0
+        }
+      },
+      "intent_accuracy": 0.8286
+    },
+    "rows": [
+      {
+        "id": "hb-01",
+        "question": "How many days of paid annual leave do full-time employees get?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "Acme_Employee_Handbook"
+        ],
+        "must_contain": [
+          "24"
+        ],
+        "ground_truth": "24 days of paid annual leave per calendar year.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "Acme_Employee_Handbook",
+          "Acme_Employee_Handbook",
+          "Acme_Employee_Handbook",
+          "about"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 1.0,
+          "context_precision": 0.75
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "The sources provide information on the number of paid sick days for full-time employees, which is not specified in the given material. However, it is mentioned that a medical certificate is required for absences longer than 3 consecutive days. This means that full-time employees may receive up to 26 days of paid sick leave per year.",
+        "error": null,
+        "ttft_s": 26.554,
+        "total_s": 34.567,
+        "faithfulness": 1.0,
+        "tokens": 555,
+        "citations": [
+          "[1] Acme_Employee_Handbook, p.1",
+          "[2] Acme_Employee_Handbook, p.1",
+          "[3] Acme_Employee_Handbook, p.1"
+        ],
+        "sources": [
+          "Acme_Employee_Handbook",
+          "Acme_Employee_Handbook",
+          "Acme_Employee_Handbook"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 0.0,
+        "answer_correct": false,
+        "citation_correct": true
+      },
+      {
+        "id": "hb-02",
+        "question": "How much unused annual leave can be carried over, and when does the rest expire?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "Acme_Employee_Handbook"
+        ],
+        "must_contain": [
+          "5",
+          "March 31"
+        ],
+        "ground_truth": "Up to 5 days can be carried over; the remaining balance expires on March 31.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "Acme_Employee_Handbook",
+          "Travel_Policy",
+          "Sales_Q1_Q2",
+          "Acme_Employee_Handbook"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 0.8772153153380493,
+          "context_precision": 0.5
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "The rest of unused sick leave may not expire until the next calendar year. The exact amount of sick leave is not specified in the source material. However, it is mentioned that a medical certificate is required for absences longer than 3 consecutive days. This means that the maximum number of sick leave is limited to 50 days per year.",
+        "error": null,
+        "ttft_s": 1.888,
+        "total_s": 6.915,
+        "faithfulness": 0.75,
+        "tokens": 398,
+        "citations": [
+          "[1] Acme_Employee_Handbook, p.1"
+        ],
+        "sources": [
+          "Acme_Employee_Handbook"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 0.0,
+        "answer_correct": false,
+        "citation_correct": true
+      },
+      {
+        "id": "hb-03",
+        "question": "How many days of paid sick leave are employees given each year?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "Acme_Employee_Handbook"
+        ],
+        "must_contain": [
+          "12"
+        ],
+        "ground_truth": "12 days of paid sick leave per year.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "Acme_Employee_Handbook",
+          "Acme_Employee_Handbook",
+          "Acme_Employee_Handbook",
+          "Acme_Employee_Handbook"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 1.0,
+          "context_precision": 1.0
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "The sources do not provide information on how many days of paid sick leave are given to each employee. The answer is based on the Acme_Employee_Handbook (page 1) document, which states that \"Full-time employees receive 24 days of paid sick leave per calendar year.\" This means that full-time employees get 24 days of paid sick leave in a year. However, there is no mention of this fact in the Acme Corp Employee Handbook (2026).",
+        "error": null,
+        "ttft_s": 5.391,
+        "total_s": 13.014,
+        "faithfulness": 1.0,
+        "tokens": 504,
+        "citations": [
+          "[1] Acme_Employee_Handbook, p.1",
+          "[2] Acme_Employee_Handbook, p.1"
+        ],
+        "sources": [
+          "Acme_Employee_Handbook",
+          "Acme_Employee_Handbook"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 0.0,
+        "answer_correct": false,
+        "citation_correct": true
+      },
+      {
+        "id": "hb-04",
+        "question": "When is a medical certificate required for sick leave?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "Acme_Employee_Handbook"
+        ],
+        "must_contain": [
+          "3"
+        ],
+        "ground_truth": "For absences longer than 3 consecutive days.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "Acme_Employee_Handbook",
+          "Acme_Employee_Handbook",
+          "IT_Security_Policy",
+          "Travel_Policy"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 1.0,
+          "context_precision": 0.5
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "Medical certificates are required for sick leave of at least 30 days per year, regardless of whether it's a primary or secondary caregiver. In other words, if you need to take sick for more than 30 days in a calendar year, you will need a medical certificate.",
+        "error": null,
+        "ttft_s": 1.388,
+        "total_s": 5.46,
+        "faithfulness": 1.0,
+        "tokens": 380,
+        "citations": [
+          "[1] Acme_Employee_Handbook, p.1"
+        ],
+        "sources": [
+          "Acme_Employee_Handbook"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 0.0,
+        "answer_correct": false,
+        "citation_correct": true
+      },
+      {
+        "id": "hb-05",
+        "question": "How long is parental leave for the primary caregiver?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "Acme_Employee_Handbook"
+        ],
+        "must_contain": [
+          "26"
+        ],
+        "ground_truth": "26 weeks fully paid.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "Acme_Employee_Handbook",
+          "IT_Security_Policy",
+          "Travel_Policy",
+          "Acme_Employee_Handbook"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 0.8772153153380493,
+          "context_precision": 0.5
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "The parental leave for primary caregivers is 26 weeks fully paid, while the secondary caregiver has a shorter period of 4 weeks. The exact length of parental leave varies depending on the circumstances and the specific employer's policies. It is recommended to check the specific employer's policy beforehand.",
+        "error": null,
+        "ttft_s": 1.107,
+        "total_s": 5.669,
+        "faithfulness": 0.333,
+        "tokens": 390,
+        "citations": [
+          "[1] Acme_Employee_Handbook, p.1"
+        ],
+        "sources": [
+          "Acme_Employee_Handbook"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 1.0,
+        "answer_correct": true,
+        "citation_correct": true
+      },
+      {
+        "id": "hb-06",
+        "question": "How many days per week can employees work remotely?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "Acme_Employee_Handbook"
+        ],
+        "must_contain": [
+          "3"
+        ],
+        "ground_truth": "Up to 3 days per week with manager approval.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "Acme_Employee_Handbook",
+          "Travel_Policy",
+          "Acme_Employee_Handbook",
+          "Acme_Employee_Handbook"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 0.9060254355346823,
+          "context_precision": 0.75
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "The sources do not provide information about the number of days per week that remote workers may work, but they suggest that employees may work remotely up to 3 days per week with a manager approval. The company provides a one-time home-office stipend of INR 25,000 for remote workers.",
+        "error": null,
+        "ttft_s": 11.388,
+        "total_s": 16.073,
+        "faithfulness": 1.0,
+        "tokens": 475,
+        "citations": [
+          "[1] Acme_Employee_Handbook, p.1",
+          "[2] Acme_Employee_Handbook, p.1"
+        ],
+        "sources": [
+          "Acme_Employee_Handbook",
+          "Acme_Employee_Handbook"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 1.0,
+        "answer_correct": true,
+        "citation_correct": true
+      },
+      {
+        "id": "hb-07",
+        "question": "What are the core collaboration hours for remote work?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "Acme_Employee_Handbook"
+        ],
+        "must_contain": [
+          "11",
+          "16"
+        ],
+        "ground_truth": "11:00 to 16:00 IST.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "Acme_Employee_Handbook",
+          "IT_Security_Policy",
+          "Travel_Policy",
+          "Acme_Employee_Handbook"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 0.8772153153380493,
+          "context_precision": 0.5
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "The core collaboration hours for remote work are 11:00 to 16:00 IST with a one-time home-office stipend of INR 25,000. The company provides this stipend to allow employees to engage in some activities that require physical presence and communication.",
+        "error": null,
+        "ttft_s": 1.516,
+        "total_s": 5.955,
+        "faithfulness": 0.5,
+        "tokens": 329,
+        "citations": [
+          "[1] Acme_Employee_Handbook, p.1"
+        ],
+        "sources": [
+          "Acme_Employee_Handbook"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 1.0,
+        "answer_correct": true,
+        "citation_correct": true
+      },
+      {
+        "id": "hb-08",
+        "question": "How much is the home-office stipend?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "Acme_Employee_Handbook"
+        ],
+        "must_contain": [
+          "25000"
+        ],
+        "ground_truth": "A one-time stipend of INR 25,000.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "Acme_Employee_Handbook",
+          "Travel_Policy",
+          "Sales_Q1_Q2",
+          "Acme_Employee_Handbook"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 0.8772153153380493,
+          "context_precision": 0.5
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "The home-office stipend mentioned in the text is INR 25,000 per calendar year. This amount may vary depending on the location and country of origin.",
+        "error": null,
+        "ttft_s": 10.439,
+        "total_s": 12.93,
+        "faithfulness": 0.5,
+        "tokens": 493,
+        "citations": [
+          "[1] Acme_Employee_Handbook, p.1",
+          "[2] Travel_Policy, p.1",
+          "[3] Sales_Q1_Q2, p.1"
+        ],
+        "sources": [
+          "Acme_Employee_Handbook",
+          "Travel_Policy",
+          "Sales_Q1_Q2"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 1.0,
+        "answer_correct": true,
+        "citation_correct": true
+      },
+      {
+        "id": "hb-09",
+        "question": "Within how many days must expenses be submitted, and through which portal?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "Acme_Employee_Handbook"
+        ],
+        "must_contain": [
+          "30",
+          "Expensify"
+        ],
+        "ground_truth": "Within 30 days through the Expensify portal.",
+        "intent": "procedural",
+        "retrieved_docs": [
+          "Acme_Employee_Handbook",
+          "Acme_Employee_Handbook",
+          "IT_Security_Policy",
+          "Acme_Employee_Handbook"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 0.9674679834891693,
+          "context_precision": 0.75
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "In the first source, the expenses must be submitted within 30 days through the Expensify portal. The second source provides a brief explanation of the expense reimbursement process: \"Purpose of the Expensify Portal: To facilitate the submission of expenses for expense-reimbursed items.\"",
+        "error": null,
+        "ttft_s": 7.954,
+        "total_s": 12.458,
+        "faithfulness": 0.5,
+        "tokens": 403,
+        "citations": [
+          "[1] Acme_Employee_Handbook, p.1",
+          "[2] Acme_Employee_Handbook, p.1"
+        ],
+        "sources": [
+          "Acme_Employee_Handbook",
+          "Acme_Employee_Handbook"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 1.0,
+        "answer_correct": true,
+        "citation_correct": true
+      },
+      {
+        "id": "hb-10",
+        "question": "Who must approve purchases above INR 50,000?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "Acme_Employee_Handbook"
+        ],
+        "must_contain": [
+          "department head"
+        ],
+        "ground_truth": "A department head must give prior approval.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "Travel_Policy",
+          "Acme_Employee_Handbook",
+          "Sales_Q1_Q2",
+          "Travel_Policy"
+        ],
+        "retrieval": {
+          "hit@1": 0.0,
+          "hit@4": 1.0,
+          "mrr": 0.5,
+          "ndcg@4": 0.6309297535714575,
+          "context_precision": 0.25
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "The answer is \"Purge_Admin (page 1)\". This means that the purchases must be approved by a purge administrator. The word \"purge\" refers to a process of reducing expenses and assets before they are transferred to other departments.",
+        "error": null,
+        "ttft_s": 13.888,
+        "total_s": 17.462,
+        "faithfulness": 0.0,
+        "tokens": 508,
+        "citations": [
+          "[1] Travel_Policy, p.1",
+          "[2] Acme_Employee_Handbook, p.1",
+          "[3] Sales_Q1_Q2, p.1"
+        ],
+        "sources": [
+          "Travel_Policy",
+          "Acme_Employee_Handbook",
+          "Sales_Q1_Q2"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 0.0,
+        "answer_correct": false,
+        "citation_correct": true
+      },
+      {
+        "id": "it-01",
+        "question": "What is the minimum password length?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "IT_Security_Policy",
+          "Acme_Employee_Handbook"
+        ],
+        "must_contain": [
+          "14"
+        ],
+        "ground_truth": "At least 14 characters.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "IT_Security_Policy",
+          "Acme_Employee_Handbook",
+          "Travel_Policy",
+          "IT_Security_Policy"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 0.9674679834891693,
+          "context_precision": 0.75
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "The minimum password length is 14 characters.",
+        "error": null,
+        "ttft_s": 7.569,
+        "total_s": 8.234,
+        "faithfulness": 1.0,
+        "tokens": 322,
+        "citations": [
+          "[1] IT_Security_Policy, p.1",
+          "[2] Acme_Employee_Handbook, p.1"
+        ],
+        "sources": [
+          "IT_Security_Policy",
+          "Acme_Employee_Handbook"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 1.0,
+        "answer_correct": true,
+        "citation_correct": true
+      },
+      {
+        "id": "it-02",
+        "question": "How often do passwords have to be rotated?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "IT_Security_Policy",
+          "Acme_Employee_Handbook"
+        ],
+        "must_contain": [
+          "180"
+        ],
+        "ground_truth": "Every 180 days.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "Acme_Employee_Handbook",
+          "IT_Security_Policy",
+          "Travel_Policy",
+          "IT_Security_Policy"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 0.9674679834891693,
+          "context_precision": 0.75
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "The frequency of password rotation depends on the specific policy and the security needs of the organization. The Acme Corp's IT Security Policy (page 1) states that the passwords must be at least 14 characters long, but it does not specify how often they are rotated. However, if the policy is updated or revised, this requirement may change. In general, the frequency of password rotation depends on the organization's needs and requirements.",
+        "error": null,
+        "ttft_s": 7.71,
+        "total_s": 13.559,
+        "faithfulness": 0.25,
+        "tokens": 408,
+        "citations": [
+          "[1] Acme_Employee_Handbook, p.1",
+          "[2] IT_Security_Policy, p.1"
+        ],
+        "sources": [
+          "Acme_Employee_Handbook",
+          "IT_Security_Policy"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 0.0,
+        "answer_correct": false,
+        "citation_correct": true
+      },
+      {
+        "id": "it-03",
+        "question": "How quickly must a lost or stolen laptop be reported?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "IT_Security_Policy"
+        ],
+        "must_contain": [
+          "24"
+        ],
+        "ground_truth": "To the IT helpdesk within 24 hours.",
+        "intent": "procedural",
+        "retrieved_docs": [
+          "IT_Security_Policy",
+          "Acme_Employee_Handbook",
+          "IT_Security_Policy",
+          "Acme_Employee_Handbook"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 0.9197207891481876,
+          "context_precision": 0.5
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "Yes, the report should be made within one hour after the incident. The loss of data from a computer is considered confidential and must be reported to IT help desk within 24 hours. This includes laptops that are lost or stolen.",
+        "error": null,
+        "ttft_s": 5.007,
+        "total_s": 8.387,
+        "faithfulness": 1.0,
+        "tokens": 314,
+        "citations": [
+          "[1] IT_Security_Policy, p.2"
+        ],
+        "sources": [
+          "IT_Security_Policy"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 1.0,
+        "answer_correct": true,
+        "citation_correct": true
+      },
+      {
+        "id": "it-04",
+        "question": "Where and how fast should suspected phishing emails be reported?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "IT_Security_Policy",
+          "Acme_Employee_Handbook"
+        ],
+        "must_contain": [
+          "one hour|1 hour|60 minutes"
+        ],
+        "ground_truth": "To security@acme.example within one hour.",
+        "intent": "procedural",
+        "retrieved_docs": [
+          "IT_Security_Policy",
+          "Acme_Employee_Handbook",
+          "Travel_Policy",
+          "IT_Security_Policy"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 0.9674679834891693,
+          "context_precision": 0.75
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "The sources provide no specific information on how quickly suspected phishing emails should be reported. However, the rule for ECIP Assistant is to avoid inventing facts or numbers that are not in the sources. It is recommended to use Markdown and concise answers. The general answer clearly labels as general knowledge.",
+        "error": null,
+        "ttft_s": 4.967,
+        "total_s": 9.308,
+        "faithfulness": 0.333,
+        "tokens": 401,
+        "citations": [
+          "[1] IT_Security_Policy, p.2",
+          "[2] Acme_Employee_Handbook, p.1"
+        ],
+        "sources": [
+          "IT_Security_Policy",
+          "Acme_Employee_Handbook"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 0.0,
+        "answer_correct": false,
+        "citation_correct": true
+      },
+      {
+        "id": "it-05",
+        "question": "How is customer data classified, and can it be stored on USB drives?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "IT_Security_Policy"
+        ],
+        "must_contain": [
+          "confidential"
+        ],
+        "ground_truth": "Customer data is Confidential and must never be stored on USB drives.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "IT_Security_Policy",
+          "Travel_Policy",
+          "Sales_Q1_Q2",
+          "Acme_Employee_Handbook"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 1.0,
+          "context_precision": 0.25
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "Yes, customer data should be classified as confidential and stored in a secure storage area. It is not recommended to store it on USB drives. The storage of customer data should be done with the utmost security measures in place to prevent unauthorized access.",
+        "error": null,
+        "ttft_s": 1.736,
+        "total_s": 5.578,
+        "faithfulness": 0.667,
+        "tokens": 320,
+        "citations": [
+          "[1] IT_Security_Policy, p.2"
+        ],
+        "sources": [
+          "IT_Security_Policy"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 1.0,
+        "answer_correct": true,
+        "citation_correct": true
+      },
+      {
+        "id": "tr-01",
+        "question": "In which class must domestic flights be booked?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "Travel_Policy"
+        ],
+        "must_contain": [
+          "economy"
+        ],
+        "ground_truth": "Economy class, through the company travel desk.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "Travel_Policy",
+          "Acme_Employee_Handbook",
+          "IT_Security_Policy",
+          "IT_Security_Policy"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 1.0,
+          "context_precision": 0.25
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "In the text material, domestic flights are mentioned as being required for travel to metro cities and international destinations. This means that domestic flights should be booked in economy class.",
+        "error": null,
+        "ttft_s": 5.053,
+        "total_s": 7.504,
+        "faithfulness": 1.0,
+        "tokens": 301,
+        "citations": [
+          "[1] Travel_Policy, p.1"
+        ],
+        "sources": [
+          "Travel_Policy"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 1.0,
+        "answer_correct": true,
+        "citation_correct": true
+      },
+      {
+        "id": "tr-02",
+        "question": "What is the daily meal allowance in metro cities?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "Travel_Policy"
+        ],
+        "must_contain": [
+          "2500"
+        ],
+        "ground_truth": "INR 2,500 per day.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "Travel_Policy",
+          "Travel_Policy",
+          "Sales_Q1_Q2",
+          "Acme_Employee_Handbook"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 1.0,
+          "context_precision": 0.5
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "In metro cities, the daily meal allowance is INR 2,500 for domestic flights and INR 1,800 for international flights. This includes a meal or dinner onboard the aircraft. The allowance is given to passengers who have booked their domestic flights in economy class through the travel desk.",
+        "error": null,
+        "ttft_s": 7.343,
+        "total_s": 12.149,
+        "faithfulness": 0.667,
+        "tokens": 390,
+        "citations": [
+          "[1] Travel_Policy, p.1",
+          "[2] Travel_Policy, p.1"
+        ],
+        "sources": [
+          "Travel_Policy",
+          "Travel_Policy"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 1.0,
+        "answer_correct": true,
+        "citation_correct": true
+      },
+      {
+        "id": "tr-03",
+        "question": "What is the maximum hotel rate per night in non-metro cities?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "Travel_Policy"
+        ],
+        "must_contain": [
+          "6000"
+        ],
+        "ground_truth": "INR 6,000 per night.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "Travel_Policy",
+          "Travel_Policy",
+          "Acme_Employee_Handbook",
+          "Acme_Employee_Handbook"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 1.0,
+          "context_precision": 0.5
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "The maximum hotel rate per night in non-metro cities is INR 6,000. This information can be found in the source material provided. The sources are not specific to this answer.",
+        "error": null,
+        "ttft_s": 1.487,
+        "total_s": 4.135,
+        "faithfulness": 1.0,
+        "tokens": 271,
+        "citations": [
+          "[1] Travel_Policy, p.1"
+        ],
+        "sources": [
+          "Travel_Policy"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 1.0,
+        "answer_correct": true,
+        "citation_correct": true
+      },
+      {
+        "id": "tr-04",
+        "question": "Who approves international travel and how far in advance?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "Travel_Policy"
+        ],
+        "must_contain": [
+          "vice president|vp",
+          "21"
+        ],
+        "ground_truth": "A vice president, at least 21 days in advance.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "Travel_Policy",
+          "Travel_Policy",
+          "Sales_Q1_Q2",
+          "Acme_Employee_Handbook"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 1.0,
+          "context_precision": 0.5
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "In the text, \"International travel requires approval from a vice president at least 21 days in advance\" is an abbreviation for \"International travel requires approval by a senior manager.\" This means that it's not clear what specific person or authority is responsible for approving international travel. The author may be referring to the senior manager, but without specifying their name or job title, it's difficult to determine who it refers to.",
+        "error": null,
+        "ttft_s": 14.144,
+        "total_s": 20.072,
+        "faithfulness": 0.5,
+        "tokens": 548,
+        "citations": [
+          "[1] Travel_Policy, p.1",
+          "[2] Travel_Policy, p.1",
+          "[3] Sales_Q1_Q2, p.1"
+        ],
+        "sources": [
+          "Travel_Policy",
+          "Travel_Policy",
+          "Sales_Q1_Q2"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 1.0,
+        "answer_correct": true,
+        "citation_correct": true
+      },
+      {
+        "id": "tr-05",
+        "question": "and for other cities?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "Travel_Policy"
+        ],
+        "must_contain": [
+          "1800"
+        ],
+        "ground_truth": "INR 1,800 per day in other cities.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "Travel_Policy",
+          "Travel_Policy",
+          "Sales_Q1_Q2",
+          "Acme_Employee_Handbook"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 1.0,
+          "context_precision": 0.5
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "Yes, it is INR 1,800 per day for international travel requiring approval from a vice president at least 21 days in advance.",
+        "error": null,
+        "ttft_s": 8.826,
+        "total_s": 10.939,
+        "faithfulness": 1.0,
+        "tokens": 390,
+        "citations": [
+          "[1] Travel_Policy, p.1",
+          "[2] Travel_Policy, p.1"
+        ],
+        "sources": [
+          "Travel_Policy",
+          "Travel_Policy"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 1.0,
+        "answer_correct": true,
+        "citation_correct": true
+      },
+      {
+        "id": "sa-01",
+        "question": "Which region had the highest revenue in Q2?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "Sales_Q1_Q2"
+        ],
+        "must_contain": [
+          "south"
+        ],
+        "ground_truth": "South, with 135 crore.",
+        "intent": "analytical",
+        "retrieved_docs": [
+          "Sales_Q1_Q2",
+          "Travel_Policy",
+          "index",
+          "about"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 1.0,
+          "context_precision": 0.25
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "The answer is \"The documents don't contain this information.\" This indicates that there is no information available about the highest revenue in Q2 for the South and North regions. The answer should be marked as \"The documents do not contain this information\".",
+        "error": null,
+        "ttft_s": 8.012,
+        "total_s": 11.325,
+        "faithfulness": 1.0,
+        "tokens": 370,
+        "citations": [
+          "[1] Sales_Q1_Q2, p.1"
+        ],
+        "sources": [
+          "Sales_Q1_Q2"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 1.0,
+        "answer_correct": true,
+        "citation_correct": true
+      },
+      {
+        "id": "sa-02",
+        "question": "What was the North region's growth percentage in Q2?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "Sales_Q1_Q2"
+        ],
+        "must_contain": [
+          "3.1"
+        ],
+        "ground_truth": "3.1 percent.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "Sales_Q1_Q2",
+          "Travel_Policy",
+          "index",
+          "about"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 1.0,
+          "context_precision": 0.25
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "The North region's growth percentage in Q2 is given as revenue_inr_crore: 120, which is not mentioned in the sources. The answer should be marked as \"The documents don't cover this\".",
+        "error": null,
+        "ttft_s": 1.063,
+        "total_s": 4.377,
+        "faithfulness": 1.0,
+        "tokens": 370,
+        "citations": [
+          "[1] Sales_Q1_Q2, p.1"
+        ],
+        "sources": [
+          "Sales_Q1_Q2"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 0.0,
+        "answer_correct": false,
+        "citation_correct": true
+      },
+      {
+        "id": "web-01",
+        "question": "What is the flight time of the SkyMapper X2 drone?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "drone"
+        ],
+        "must_contain": [
+          "55"
+        ],
+        "ground_truth": "55 minutes.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "drone",
+          "index",
+          "Travel_Policy",
+          "Acme_Employee_Handbook"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 1.0,
+          "context_precision": 0.25
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "The price of the SkyMapper X2 drone includes a flight time of 55 minutes and a range of 12 km. The carrier carries a 61 megapixel camera. Price: INR 4,80,000.",
+        "error": null,
+        "ttft_s": 4.774,
+        "total_s": 8.574,
+        "faithfulness": 1.0,
+        "tokens": 305,
+        "citations": [
+          "[1] drone, p.1"
+        ],
+        "sources": [
+          "drone"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 1.0,
+        "answer_correct": true,
+        "citation_correct": true
+      },
+      {
+        "id": "web-02",
+        "question": "When was Nimbus Labs founded and how many employees does it have?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "about"
+        ],
+        "must_contain": [
+          "2019",
+          "42"
+        ],
+        "ground_truth": "Founded in 2019; 42 employees.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "about",
+          "index",
+          "Acme_Employee_Handbook",
+          "Acme_Employee_Handbook"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 1.0,
+          "context_precision": 0.25
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "The company was founded in 2019, and its founders are three VIT graduates. The company has 42 employees and its office is located in Guindy, Chennai. Nimbus Labs builds small satellites and survey drones in Chennai.",
+        "error": null,
+        "ttft_s": 5.737,
+        "total_s": 9.836,
+        "faithfulness": 1.0,
+        "tokens": 338,
+        "citations": [
+          "[1] about, p.1",
+          "[2] index, p.1"
+        ],
+        "sources": [
+          "about",
+          "index"
+        ],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 1.0,
+        "answer_correct": true,
+        "citation_correct": true
+      },
+      {
+        "id": "web-03",
+        "question": "Where is the Nimbus Labs office located?",
+        "expected_mode": "grounded",
+        "relevant_docs": [
+          "about"
+        ],
+        "must_contain": [
+          "guindy"
+        ],
+        "ground_truth": "Guindy, Chennai.",
+        "intent": "factual",
+        "retrieved_docs": [
+          "about",
+          "index",
+          "Sales_Q1_Q2",
+          "Travel_Policy"
+        ],
+        "retrieval": {
+          "hit@1": 1.0,
+          "hit@4": 1.0,
+          "mrr": 1.0,
+          "ndcg@4": 1.0,
+          "context_precision": 0.25
+        },
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "The Nimbus Labs office is in a building in Guindy, Chennai. The address is given as [2] index (page 1).",
+        "error": null,
+        "ttft_s": 1.136,
+        "total_s": 3.4,
+        "faithfulness": 1.0,
+        "tokens": 304,
+        "citations": [
+          "[2] index, p.1"
+        ],
+        "sources": [
+          "about",
+          "index"
+        ],
+        "cited_sources": [
+          "index"
+        ],
+        "routing_correct": true,
+        "keyword_recall": 1.0,
+        "answer_correct": true,
+        "citation_correct": false
+      },
+      {
+        "id": "ch-01",
+        "question": "What is the capital of Japan?",
+        "expected_mode": "chat",
+        "relevant_docs": [],
+        "must_contain": [
+          "tokyo"
+        ],
+        "ground_truth": "Tokyo.",
+        "intent": "factual",
+        "mode": "chat",
+        "route_reason": "docs_not_relevant",
+        "predicted_intent": "factual",
+        "answer": "Japan has a capital city named Tokyo.",
+        "error": null,
+        "ttft_s": 4.021,
+        "total_s": 4.678,
+        "faithfulness": 1.0,
+        "tokens": 112,
+        "citations": [],
+        "sources": [],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 1.0,
+        "answer_correct": true
+      },
+      {
+        "id": "ch-02",
+        "question": "Who wrote Romeo and Juliet?",
+        "expected_mode": "chat",
+        "relevant_docs": [],
+        "must_contain": [
+          "shakespeare"
+        ],
+        "ground_truth": "William Shakespeare.",
+        "intent": "factual",
+        "mode": "chat",
+        "route_reason": "docs_not_relevant",
+        "predicted_intent": "factual",
+        "answer": "The play was written by William Shakespeare in 1569, but the title \"Romeo and Juliet\" is derived from a play that was first published in 1874. The play was later adapted into the famous film adaptation in 1962.",
+        "error": null,
+        "ttft_s": 1.034,
+        "total_s": 4.853,
+        "faithfulness": 1.0,
+        "tokens": 162,
+        "citations": [],
+        "sources": [],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 1.0,
+        "answer_correct": true
+      },
+      {
+        "id": "ch-03",
+        "question": "At what temperature does water boil at sea level in Celsius?",
+        "expected_mode": "chat",
+        "relevant_docs": [],
+        "must_contain": [
+          "100"
+        ],
+        "ground_truth": "100 degrees Celsius.",
+        "intent": "factual",
+        "mode": "chat",
+        "route_reason": "docs_not_relevant",
+        "predicted_intent": "factual",
+        "answer": "The answer is 341.5 degrees Celis (341.5\u00b0C) in Celsius. The water boils at sea level at a temperature of 341.5 degrees Celis, which is the lowest temperature on Earth.",
+        "error": null,
+        "ttft_s": 1.206,
+        "total_s": 4.765,
+        "faithfulness": 1.0,
+        "tokens": 166,
+        "citations": [],
+        "sources": [],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 0.0,
+        "answer_correct": false
+      },
+      {
+        "id": "ch-04",
+        "question": "What is 12 multiplied by 12?",
+        "expected_mode": "chat",
+        "relevant_docs": [],
+        "must_contain": [
+          "144"
+        ],
+        "ground_truth": "144.",
+        "intent": "factual",
+        "mode": "grounded",
+        "route_reason": "relevant_docs",
+        "predicted_intent": "factual",
+        "answer": "Yes, 12 multiplied by 12 is the number of days in a year for sick leave and parental leave.",
+        "error": null,
+        "ttft_s": 27.262,
+        "total_s": 29.162,
+        "faithfulness": 1.0,
+        "tokens": 610,
+        "citations": [
+          "[1] drone, p.1",
+          "[2] Acme_Employee_Handbook, p.1",
+          "[3] Travel_Policy, p.1",
+          "[4] Sales_Q1_Q2, p.1"
+        ],
+        "sources": [
+          "drone",
+          "Acme_Employee_Handbook",
+          "Travel_Policy",
+          "Sales_Q1_Q2"
+        ],
+        "cited_sources": [],
+        "routing_correct": false,
+        "keyword_recall": 0.0,
+        "answer_correct": false
+      },
+      {
+        "id": "ch-05",
+        "question": "How do you say hello in French?",
+        "expected_mode": "chat",
+        "relevant_docs": [],
+        "must_contain": [
+          "bonjour"
+        ],
+        "ground_truth": "Bonjour.",
+        "intent": "factual",
+        "mode": "chat",
+        "route_reason": "docs_not_relevant",
+        "predicted_intent": "procedural",
+        "answer": "Bonjons, bonjons et bonjons! (Hello, hello and hello)\nJe meaux, je meux et je meux! (I am happy, I am happy)\nS'il vous est, s'il vous is and you are welcome to the French language.",
+        "error": null,
+        "ttft_s": 4.312,
+        "total_s": 8.345,
+        "faithfulness": 1.0,
+        "tokens": 167,
+        "citations": [],
+        "sources": [],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": 0.0,
+        "answer_correct": false
+      },
+      {
+        "id": "ch-06",
+        "question": "Write a short haiku about the rain.",
+        "expected_mode": "chat",
+        "relevant_docs": [],
+        "must_contain": [],
+        "ground_truth": "",
+        "intent": "creative",
+        "mode": "chat",
+        "route_reason": "docs_not_relevant",
+        "predicted_intent": "creative",
+        "answer": "Shadowed clouds, raindrop drops,\nA soft rain, like a dream,\nSunshine, joy, peacefulness,\nWonderful, sweet, rains.",
+        "error": null,
+        "ttft_s": 1.01,
+        "total_s": 3.71,
+        "faithfulness": 1.0,
+        "tokens": 147,
+        "citations": [],
+        "sources": [],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": null,
+        "answer_correct": null
+      },
+      {
+        "id": "ch-07",
+        "question": "Explain what an API is in one sentence.",
+        "expected_mode": "chat",
+        "relevant_docs": [],
+        "must_contain": [],
+        "ground_truth": "An interface that lets software programs communicate.",
+        "intent": "factual",
+        "mode": "chat",
+        "route_reason": "docs_not_relevant",
+        "predicted_intent": "coding",
+        "answer": "An API is a set of software or services that allow developers to access and interact with data from other systems or applications. An example of an API would be the Facebook API, which allows users to search for and connect with other people on social media platforms like Instagram. In one sentence, it means \"an interface\".",
+        "error": null,
+        "ttft_s": 0.926,
+        "total_s": 5.001,
+        "faithfulness": 1.0,
+        "tokens": 170,
+        "citations": [],
+        "sources": [],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": null,
+        "answer_correct": null
+      },
+      {
+        "id": "st-01",
+        "question": "hi",
+        "expected_mode": "instant",
+        "relevant_docs": [],
+        "must_contain": [],
+        "ground_truth": "",
+        "intent": "conversational",
+        "mode": "instant",
+        "route_reason": "smalltalk",
+        "predicted_intent": "conversational",
+        "answer": "Hi! \ud83d\udc4b How can I help you today? You can ask me anything, or upload documents and ask questions about them.",
+        "error": null,
+        "ttft_s": 0.002,
+        "total_s": 0.003,
+        "faithfulness": 1.0,
+        "tokens": 0,
+        "citations": [],
+        "sources": [],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": null,
+        "answer_correct": null
+      },
+      {
+        "id": "st-02",
+        "question": "thanks!",
+        "expected_mode": "instant",
+        "relevant_docs": [],
+        "must_contain": [],
+        "ground_truth": "",
+        "intent": "conversational",
+        "mode": "instant",
+        "route_reason": "smalltalk",
+        "predicted_intent": "conversational",
+        "answer": "You're welcome! Anything else I can help with?",
+        "error": null,
+        "ttft_s": 0.002,
+        "total_s": 0.002,
+        "faithfulness": 1.0,
+        "tokens": 0,
+        "citations": [],
+        "sources": [],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": null,
+        "answer_correct": null
+      },
+      {
+        "id": "st-03",
+        "question": "who are you?",
+        "expected_mode": "instant",
+        "relevant_docs": [],
+        "must_contain": [],
+        "ground_truth": "",
+        "intent": "conversational",
+        "mode": "instant",
+        "route_reason": "smalltalk",
+        "predicted_intent": "conversational",
+        "answer": "I'm ECIP Assistant \u2014 a private AI assistant. I can chat about almost anything, and when you upload documents I answer questions about them with citations.",
+        "error": null,
+        "ttft_s": 0.001,
+        "total_s": 0.002,
+        "faithfulness": 1.0,
+        "tokens": 0,
+        "citations": [],
+        "sources": [],
+        "cited_sources": [],
+        "routing_correct": true,
+        "keyword_recall": null,
+        "answer_correct": null
+      }
+    ]
+  },
+  "retrieval_ablation": {
+    "embeddings": "onnx-package",
+    "n_queries": 25,
+    "top_k": 4,
+    "results": {
+      "bm25_only": {
+        "hit@1": 1.0,
+        "hit@4": 1.0,
+        "mrr": 1.0,
+        "ndcg@4": 0.9951,
+        "context_precision": 0.76,
+        "latency_p50_ms": 1.1
+      },
+      "dense_only": {
+        "hit@1": 0.92,
+        "hit@4": 1.0,
+        "mrr": 0.9467,
+        "ndcg@4": 0.9299,
+        "context_precision": 0.48,
+        "latency_p50_ms": 5.9
+      },
+      "hybrid_rrf": {
+        "hit@1": 0.96,
+        "hit@4": 1.0,
+        "mrr": 0.98,
+        "ndcg@4": 0.9534,
+        "context_precision": 0.5,
+        "latency_p50_ms": 5.3
+      }
+    }
+  }
+}

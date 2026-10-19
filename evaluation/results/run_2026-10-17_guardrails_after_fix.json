@@ -1,0 +1,10 @@
+{
+  "n": 42,
+  "harmful_blocked": "20/20",
+  "benign_false_blocks": "0/18",
+  "pii_redacted": "4/4",
+  "accuracy": 1.0,
+  "latency_ms_max": 0.96,
+  "latency_ms_mean": 0.062,
+  "mistakes": []
+}

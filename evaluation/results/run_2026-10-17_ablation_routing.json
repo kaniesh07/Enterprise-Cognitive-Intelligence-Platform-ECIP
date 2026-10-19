@@ -1,0 +1,38 @@
+{
+  "api_evaluation": null,
+  "retrieval_ablation": {
+    "embeddings": "onnx-package",
+    "n_queries": 25,
+    "top_k": 4,
+    "results": {
+      "bm25_only": {
+        "hit@1": 1.0,
+        "hit@4": 1.0,
+        "mrr": 1.0,
+        "ndcg@4": 0.9951,
+        "context_precision": 0.76,
+        "latency_p50_ms": 1.2
+      },
+      "dense_only": {
+        "hit@1": 0.92,
+        "hit@4": 1.0,
+        "mrr": 0.9467,
+        "ndcg@4": 0.9299,
+        "context_precision": 0.48,
+        "latency_p50_ms": 6.2
+      },
+      "hybrid_rrf": {
+        "hit@1": 0.96,
+        "hit@4": 1.0,
+        "mrr": 0.98,
+        "ndcg@4": 0.9534,
+        "context_precision": 0.5,
+        "latency_p50_ms": 5.9
+      }
+    },
+    "routing_no_llm": {
+      "accuracy": 1.0,
+      "mistakes": []
+    }
+  }
+}

@@ -1,0 +1,28 @@
+# Render blueprint (https://render.com) — single container, embedded vector DB on a disk.
+# The LLM is an OpenAI-compatible API (OpenAI, Groq, Together …) or your own Ollama/vLLM host.
+services:
+  - type: web
+    name: ecip
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: standard
+    healthCheckPath: /health
+    disk:
+      name: ecip-data
+      mountPath: /app/data
+      sizeGB: 5
+    envVars:
+      - key: LLM_PROVIDER
+        value: openai
+      - key: OPENAI_BASE_URL
+        value: https://api.openai.com/v1
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: LLM_MODEL
+        value: gpt-4o-mini
+      - key: EMBED_PROVIDER
+        value: openai
+      - key: EMBED_MODEL
+        value: text-embedding-3-small
+      - key: API_KEYS
+        sync: false            # e.g. "a-long-random-key:admin"

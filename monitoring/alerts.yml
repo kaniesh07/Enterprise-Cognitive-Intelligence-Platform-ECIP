@@ -1,0 +1,23 @@
+groups:
+  - name: ecip
+    rules:
+      - alert: ECIPLLMDown
+        expr: max(ecip_llm_up) == 0
+        for: 2m
+        labels: {severity: critical}
+        annotations: {summary: "LLM backend unreachable from the ECIP API"}
+      - alert: ECIPVectorDBDown
+        expr: max(ecip_vectordb_up) == 0
+        for: 2m
+        labels: {severity: critical}
+        annotations: {summary: "Vector database unreachable"}
+      - alert: ECIPHighErrorRate
+        expr: (sum(rate(ecip_pipeline_requests_total{status="error"}[10m])) or vector(0)) / clamp_min(sum(rate(ecip_pipeline_requests_total[10m])), 1e-9) > 0.1
+        for: 5m
+        labels: {severity: warning}
+        annotations: {summary: "More than 10% of chat requests are failing"}
+      - alert: ECIPSlowFirstToken
+        expr: histogram_quantile(0.95, sum by (le) (rate(ecip_time_to_first_token_seconds_bucket{mode!="instant"}[10m]))) > 10
+        for: 10m
+        labels: {severity: warning}
+        annotations: {summary: "p95 time-to-first-token above 10s — consider a smaller model or a GPU"}

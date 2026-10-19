@@ -1,0 +1,192 @@
+# ECIP — full local stack
+#
+#   docker compose up -d --build          chat UI  http://localhost:3000
+#                                          API      http://localhost:8000/docs
+#                                          Grafana  http://localhost:3001  (admin / $GRAFANA_PASSWORD)
+#                                          Prometheus http://localhost:9090
+#   docker compose --profile scale up -d  + Redis, Celery worker, Flower (bulk connector syncs)
+#
+# GPU (NVIDIA):  docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d
+# Models are pulled automatically on first start by the one-shot `ollama-init` service.
+
+x-api-env: &api-env
+  LLM_PROVIDER: ${LLM_PROVIDER:-ollama}
+  OLLAMA_HOST: ${OLLAMA_HOST_INTERNAL:-http://ollama:11434}
+  OPENAI_BASE_URL: ${OPENAI_BASE_URL:-https://api.openai.com/v1}
+  OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+  LLM_MODEL: ${LLM_MODEL:-llama3.2:3b}
+  EMBED_PROVIDER: ${EMBED_PROVIDER:-ollama}
+  EMBED_MODEL: ${EMBED_MODEL:-nomic-embed-text}
+  CHROMA_HOST: chromadb
+  CHROMA_PORT: "8000"
+  DATA_DIR: /app/data
+  API_KEYS: ${API_KEYS:-ecip-dev-key:admin}
+  NUM_CTX: ${NUM_CTX:-4096}
+  MAX_TOKENS: ${MAX_TOKENS:-1024}
+  TEMPERATURE: ${TEMPERATURE:-0.3}
+  TOP_K_FINAL: ${TOP_K_FINAL:-4}
+  VERIFIER_MODE: ${VERIFIER_MODE:-heuristic}
+  RERANK_ENABLED: ${RERANK_ENABLED:-false}
+  RATE_LIMIT_RPM: ${RATE_LIMIT_RPM:-60}
+  CORS_ORIGINS: ${CORS_ORIGINS:-*}
+  LOG_LEVEL: ${LOG_LEVEL:-INFO}
+
+services:
+
+  # ── Local LLM runtime ────────────────────────────────────────────────────
+  ollama:
+    image: ${OLLAMA_IMAGE:-ollama/ollama:latest}
+    ports: ["11434:11434"]
+    volumes: ["ollama_data:/root/.ollama"]
+    environment:
+      OLLAMA_KEEP_ALIVE: ${OLLAMA_KEEP_ALIVE:-30m}     # keep models in RAM → no reload latency
+      OLLAMA_MAX_LOADED_MODELS: "2"                     # chat model + embedding model
+      OLLAMA_NUM_PARALLEL: ${OLLAMA_NUM_PARALLEL:-2}
+      OLLAMA_FLASH_ATTENTION: "1"
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+      start_period: 20s
+    restart: unless-stopped
+
+  # One-shot: pull the chat + embedding models (idempotent, skipped when present)
+  ollama-init:
+    image: ${OLLAMA_IMAGE:-ollama/ollama:latest}
+    depends_on:
+      ollama: {condition: service_healthy}
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+      LLM_MODEL: ${LLM_MODEL:-llama3.2:3b}
+      EMBED_MODEL: ${EMBED_MODEL:-nomic-embed-text}
+      EMBED_PROVIDER: ${EMBED_PROVIDER:-ollama}
+      LLM_PROVIDER: ${LLM_PROVIDER:-ollama}
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        set -e
+        if [ "$$LLM_PROVIDER" = "ollama" ]; then echo "pulling $$LLM_MODEL"; ollama pull "$$LLM_MODEL"; fi
+        if [ "$$EMBED_PROVIDER" = "ollama" ]; then echo "pulling $$EMBED_MODEL"; ollama pull "$$EMBED_MODEL"; fi
+        echo "models ready"
+    restart: "no"
+
+  # ── Vector database ──────────────────────────────────────────────────────
+  chromadb:
+    image: chromadb/chroma:0.5.23           # must match the chromadb 0.5.x client in requirements.txt
+    ports: ["8001:8000"]
+    volumes: ["chroma_data:/chroma/chroma"]
+    environment:
+      IS_PERSISTENT: "TRUE"
+      ANONYMIZED_TELEMETRY: "FALSE"
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/heartbeat', timeout=5)"]
+      interval: 10s
+      timeout: 8s
+      retries: 10
+      start_period: 15s
+    restart: unless-stopped
+
+  # ── ECIP API (+ chat UI at /) ────────────────────────────────────────────
+  api:
+    build: {context: ., dockerfile: Dockerfile}
+    image: ecip-api:latest
+    ports: ["8000:8000"]
+    volumes: ["api_data:/app/data"]
+    environment: *api-env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # lets connectors reach sites/services on your machine
+    depends_on:
+      chromadb: {condition: service_healthy}
+      ollama-init: {condition: service_completed_successfully}
+    restart: unless-stopped
+
+  # ── Chat UI via nginx (same UI is also served by the API at :8000) ──────
+  frontend:
+    image: nginx:1.27-alpine
+    ports: ["3000:80"]
+    volumes:
+      - ./frontend/index.html:/usr/share/nginx/html/index.html:ro
+      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      api: {condition: service_started}
+    restart: unless-stopped
+
+  # ── Monitoring ───────────────────────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:v2.53.2
+    ports: ["9090:9090"]
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=15d
+      - --web.enable-lifecycle
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    ports: ["3001:3000"]
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-ecip-admin}
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /var/lib/grafana/dashboards/ecip.json
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      PROMETHEUS_URL: http://prometheus:9090
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    depends_on: [prometheus]
+    restart: unless-stopped
+
+  # ── Scale ingestion (optional: --profile scale) ──────────────────────────
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+    volumes: ["redis_data:/data"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    profiles: ["scale"]
+    restart: unless-stopped
+
+  worker:
+    build: {context: ., dockerfile: Dockerfile, args: {EXTRAS: "true"}}
+    image: ecip-worker:latest
+    command: celery -A pipeline.worker.celery_app worker --loglevel=info --concurrency=${INGEST_WORKERS:-4} -Q ecip --hostname=worker@%h
+    volumes: ["api_data:/app/data"]
+    environment:
+      <<: *api-env
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+    depends_on:
+      redis: {condition: service_healthy}
+      chromadb: {condition: service_healthy}
+    profiles: ["scale"]
+    restart: unless-stopped
+
+  flower:
+    image: mher/flower:2.0
+    ports: ["5555:5555"]
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/0
+      FLOWER_BASIC_AUTH: ${FLOWER_USER:-admin}:${FLOWER_PASS:-ecip-flower}
+    depends_on:
+      redis: {condition: service_healthy}
+    profiles: ["scale"]
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
+  chroma_data:
+  api_data:
+  redis_data:
+  prometheus_data:
+  grafana_data:

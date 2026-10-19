@@ -1,0 +1,21 @@
+[project]
+name = "ecip"
+version = "3.0.0"
+description = "ECIP — ChatGPT-style assistant with grounded answers from your documents"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-q --tb=short -p no:cacheprovider"
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+extend-exclude = ["data", "frontend"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W"]
+ignore = ["E501", "E402", "E701", "E702", "E731", "E741"]

@@ -1,0 +1,28 @@
+# Render FREE blueprint: Groq (free OpenAI-compatible API) for the LLM, no Ollama, no disk.
+# Free instances sleep when idle and have no persistent disk: uploaded documents are lost on restart.
+services:
+  - type: web
+    name: ecip-free
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: LLM_PROVIDER
+        value: openai
+      - key: OPENAI_BASE_URL
+        value: https://api.groq.com/openai/v1
+      - key: OPENAI_API_KEY
+        sync: false            # your Groq key (gsk_...)
+      - key: LLM_MODEL
+        value: openai/gpt-oss-20b    # llama-3.1-8b-instant was retired by Groq on 16 Aug 2026
+      - key: REASONING_EFFORT
+        value: low                   # less "thinking" = faster answers, fewer tokens
+      - key: MAX_TOKENS
+        value: "2048"                # thinking tokens count too
+      - key: EMBED_PROVIDER
+        value: hash            # Groq has no embeddings API; keyword (BM25) search does the work
+      - key: SERVE_FRONTEND
+        value: "true"
+      - key: API_KEYS
+        sync: false            # e.g. "a-long-random-key:admin"

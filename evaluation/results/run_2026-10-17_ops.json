@@ -1,0 +1,271 @@
+{
+  "ingestion": {
+    "files": [
+      {
+        "file": "IT_Security_Policy.pdf",
+        "kb": 2.2,
+        "http": 200,
+        "chunks": 2,
+        "seconds": 0.113,
+        "title": "IT_Security_Policy",
+        "retrievable_top1": true,
+        "retrievable_top4": true
+      },
+      {
+        "file": "Travel_Policy.docx",
+        "kb": 36.1,
+        "http": 200,
+        "chunks": 2,
+        "seconds": 0.133,
+        "title": "Travel_Policy",
+        "retrievable_top1": true,
+        "retrievable_top4": true
+      },
+      {
+        "file": "Sales_Q1_Q2.csv",
+        "kb": 0.1,
+        "http": 200,
+        "chunks": 1,
+        "seconds": 0.033,
+        "title": "Sales_Q1_Q2",
+        "retrievable_top1": true,
+        "retrievable_top4": true
+      },
+      {
+        "file": "Acme_Employee_Handbook.md",
+        "kb": 1.1,
+        "http": 200,
+        "chunks": 4,
+        "seconds": 0.096,
+        "title": "Acme_Employee_Handbook",
+        "retrievable_top1": true,
+        "retrievable_top4": true
+      },
+      {
+        "file": "about.html",
+        "kb": 0.2,
+        "http": 200,
+        "chunks": 1,
+        "seconds": 0.057,
+        "title": "about",
+        "retrievable_top1": true,
+        "retrievable_top4": true
+      },
+      {
+        "file": "index.html",
+        "kb": 0.2,
+        "http": 200,
+        "chunks": 1,
+        "seconds": 0.016,
+        "title": "index"
+      },
+      {
+        "file": "drone.html",
+        "kb": 0.2,
+        "http": 200,
+        "chunks": 1,
+        "seconds": 0.022,
+        "title": "drone"
+      },
+      {
+        "file": "Release_Notes.txt",
+        "kb": 0.1,
+        "http": 200,
+        "chunks": 1,
+        "seconds": 0.018,
+        "title": "Release_Notes",
+        "retrievable_top1": true,
+        "retrievable_top4": true
+      },
+      {
+        "file": "Config_Reference.json",
+        "kb": 0.1,
+        "http": 200,
+        "chunks": 1,
+        "seconds": 0.025,
+        "title": "Config_Reference",
+        "retrievable_top1": true,
+        "retrievable_top4": true
+      },
+      {
+        "file": "Large_Manual.md",
+        "kb": 150.8,
+        "http": 200,
+        "chunks": 400,
+        "seconds": 4.948,
+        "title": "Large_Manual",
+        "retrievable_top1": true,
+        "retrievable_top4": true
+      }
+    ],
+    "large_doc_chunks_per_s": 80.8,
+    "reingest_no_duplicates": true,
+    "update_replaces_old_content": true,
+    "delete_removes_everywhere": true,
+    "rejections_http": {
+      "empty_file": 422,
+      "unsupported_type": 400,
+      "oversized_upload": 413
+    }
+  },
+  "connectors": {
+    "local_folder": {
+      "first_sync": {
+        "status": "completed",
+        "total_discovered": 3,
+        "indexed": 3,
+        "skipped": 0,
+        "failed": 0,
+        "elapsed_s": 0.0
+      },
+      "resync_unchanged": {
+        "status": "completed",
+        "total_discovered": 3,
+        "indexed": 1,
+        "skipped": 2,
+        "failed": 0,
+        "elapsed_s": 0.0
+      },
+      "after_edit_and_add": {
+        "status": "completed",
+        "total_discovered": 4,
+        "indexed": 2,
+        "skipped": 2,
+        "failed": 0,
+        "elapsed_s": 0.0
+      },
+      "edited_content_searchable": true
+    },
+    "website": {
+      "first_sync": {
+        "status": "completed",
+        "total_discovered": 3,
+        "indexed": 3,
+        "skipped": 0,
+        "failed": 0,
+        "elapsed_s": 0.1
+      },
+      "resync_unchanged": {
+        "status": "completed",
+        "total_discovered": 3,
+        "indexed": 0,
+        "skipped": 3,
+        "failed": 0,
+        "elapsed_s": 0.0
+      },
+      "drone_page_top1": "drone"
+    }
+  },
+  "load": {
+    "small_talk": [
+      {
+        "concurrency": 1,
+        "requests": 20,
+        "errors": 0,
+        "throughput_rps": 48.95,
+        "p50_s": 0.02,
+        "p95_s": 0.03,
+        "ttft_p50_s": 0.019,
+        "ttft_p95_s": 0.029
+      },
+      {
+        "concurrency": 8,
+        "requests": 32,
+        "errors": 0,
+        "throughput_rps": 107.36,
+        "p50_s": 0.062,
+        "p95_s": 0.099,
+        "ttft_p50_s": 0.06,
+        "ttft_p95_s": 0.098
+      },
+      {
+        "concurrency": 32,
+        "requests": 128,
+        "errors": 0,
+        "throughput_rps": 80.64,
+        "p50_s": 0.226,
+        "p95_s": 0.5,
+        "ttft_p50_s": 0.209,
+        "ttft_p95_s": 0.442
+      }
+    ],
+    "retrieval": [
+      {
+        "concurrency": 1,
+        "requests": 20,
+        "errors": 0,
+        "throughput_rps": 40.99,
+        "p50_s": 0.023,
+        "p95_s": 0.038,
+        "ttft_p50_s": null,
+        "ttft_p95_s": null
+      },
+      {
+        "concurrency": 8,
+        "requests": 32,
+        "errors": 0,
+        "throughput_rps": 72.13,
+        "p50_s": 0.1,
+        "p95_s": 0.155,
+        "ttft_p50_s": null,
+        "ttft_p95_s": null
+      },
+      {
+        "concurrency": 32,
+        "requests": 128,
+        "errors": 0,
+        "throughput_rps": 71.93,
+        "p50_s": 0.265,
+        "p95_s": 0.51,
+        "ttft_p50_s": null,
+        "ttft_p95_s": null
+      }
+    ],
+    "chat_stream": [
+      {
+        "concurrency": 1,
+        "requests": 2,
+        "errors": 0,
+        "throughput_rps": 0.11,
+        "p50_s": 9.005,
+        "p95_s": 9.005,
+        "ttft_p50_s": 5.07,
+        "ttft_p95_s": 5.07
+      },
+      {
+        "concurrency": 2,
+        "requests": 4,
+        "errors": 0,
+        "throughput_rps": 0.24,
+        "p50_s": 9.251,
+        "p95_s": 10.875,
+        "ttft_p50_s": 0.326,
+        "ttft_p95_s": 4.925
+      },
+      {
+        "concurrency": 4,
+        "requests": 8,
+        "errors": 0,
+        "throughput_rps": 0.13,
+        "p50_s": 30.362,
+        "p95_s": 37.289,
+        "ttft_p50_s": 8.59,
+        "ttft_p95_s": 23.661
+      }
+    ]
+  },
+  "failures": {
+    "no_api_key_http": 401,
+    "wrong_api_key_http": 401,
+    "disconnect_after_tokens": 5,
+    "disconnect_closed_in_s": 1.3,
+    "healthy_after_disconnect": "healthy"
+  },
+  "llm_down": {
+    "health": "degraded",
+    "first_5_requests": "clear error 'Cannot reach the language model\u2026' in 0.01 s",
+    "requests_6+": "circuit open, fail fast in 0.01 s",
+    "small_talk_and_search_while_down": "still working",
+    "recovery_after_restart_s": 65
+  }
+}

@@ -1,0 +1,65 @@
+# Generic Kubernetes deployment (EKS, GKE, AKS, k3s …).
+#   kubectl create secret generic ecip-secrets \
+#     --from-literal=API_KEYS='change-me:admin' --from-literal=OPENAI_API_KEY='sk-...'
+#   kubectl apply -f deploy/k8s/ecip.yaml
+# Uses the embedded vector DB on a PersistentVolume (1 replica). For several replicas run a
+# Chroma server and set CHROMA_HOST. Point OLLAMA_HOST at a GPU Ollama service or use
+# LLM_PROVIDER=openai with any OpenAI-compatible endpoint (vLLM, OpenAI, Groq …).
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: ecip-config}
+data:
+  LLM_PROVIDER: "ollama"
+  OLLAMA_HOST: "http://ollama:11434"
+  LLM_MODEL: "llama3.2:3b"
+  EMBED_PROVIDER: "ollama"
+  EMBED_MODEL: "nomic-embed-text"
+  DATA_DIR: "/app/data"
+  LOG_FORMAT: "json"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: ecip-data}
+spec:
+  accessModes: [ReadWriteOnce]
+  resources: {requests: {storage: 10Gi}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: ecip-api, labels: {app: ecip-api}}
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector: {matchLabels: {app: ecip-api}}
+  template:
+    metadata:
+      labels: {app: ecip-api}
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: "/metrics"
+    spec:
+      securityContext: {runAsUser: 10001, fsGroup: 10001}
+      containers:
+        - name: api
+          image: ghcr.io/your-org/ecip-api:latest      # docker build -t … . && docker push …
+          ports: [{containerPort: 8000}]
+          envFrom:
+            - configMapRef: {name: ecip-config}
+            - secretRef: {name: ecip-secrets}
+          volumeMounts: [{name: data, mountPath: /app/data}]
+          readinessProbe: {httpGet: {path: /ready, port: 8000}, periodSeconds: 10}
+          livenessProbe: {httpGet: {path: /health, port: 8000}, periodSeconds: 20, timeoutSeconds: 6}
+          resources:
+            requests: {cpu: "500m", memory: "1Gi"}
+            limits: {memory: "3Gi"}
+      volumes:
+        - name: data
+          persistentVolumeClaim: {claimName: ecip-data}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: ecip-api}
+spec:
+  selector: {app: ecip-api}
+  ports: [{port: 80, targetPort: 8000}]
