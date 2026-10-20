@@ -82,13 +82,20 @@ def _auth_failed():
         pass
 
 
+def _public_role() -> Optional[str]:
+    """PUBLIC_ROLE=reader lets visitors without a valid key chat and search (no uploads/admin)."""
+    role = (os.getenv("PUBLIC_ROLE") or "").strip().lower()
+    return role if role in _ROLE_WEIGHTS else None
+
+
 def _check(api_key: Optional[str], min_role: str) -> str:
-    role = _get_role(api_key)
+    role = _get_role(api_key) or _public_role()
     if not role:
         _auth_failed()
         raise HTTPException(status_code=401, detail="Missing or invalid API key. Set the X-API-Key header.")
     if _ROLE_WEIGHTS.get(role, 0) < _ROLE_WEIGHTS.get(min_role, 99):
-        raise HTTPException(status_code=403, detail=f"Role '{role}' insufficient. Required: '{min_role}'.")
+        raise HTTPException(status_code=403, detail=f"This needs a '{min_role}' API key (you have '{role}'). "
+                                                    "Open Settings and enter an admin or writer key.")
     return role
 
 
