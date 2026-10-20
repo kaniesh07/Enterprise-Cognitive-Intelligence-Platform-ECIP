@@ -35,7 +35,7 @@ from fastapi.responses import FileResponse, JSONResponse, Response, StreamingRes
 from pydantic import BaseModel, Field
 
 from agents.circuit_breaker import get_all_stats as _cb_stats, get_breaker as _get_breaker
-from auth.middleware import require_admin, require_auth, require_writer
+from auth.middleware import _public_role, require_admin, require_auth, require_writer
 from config import settings
 from guardrails.pipeline import get_pipeline as _get_guardrail_pipeline
 from monitoring.logging_setup import configure_logging
@@ -337,6 +337,8 @@ async def public_config():
     return {"llm_provider": settings.llm_provider, "model": settings.llm_model,
             "embed": _embed_label(),
             "allowed_extensions": sorted(ALLOWED_EXTENSIONS), "max_upload_mb": MAX_UPLOAD_MB,
+            "grafana_url": settings.grafana_url.rstrip("/"),
+            "public_access": bool(_public_role()),
             "version": app.version}
 
 
