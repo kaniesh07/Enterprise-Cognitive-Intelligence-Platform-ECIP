@@ -11,6 +11,13 @@
 * Groq retired `llama-3.1-8b-instant` (16 Aug 2026): free config now uses `openai/gpt-oss-20b`. New
   `REASONING_EFFORT` setting (sent as `reasoning_effort` for reasoning models); a retired/unknown model now gives a
   clear "set LLM_MODEL" message instead of a raw HTTP 404.
+* Other devices: `PUBLIC_ROLE=reader` lets anyone with the link chat and search without a key (uploads and
+  deletes still need a writer/admin key, which now get a clear 403 message). Settings has "Copy login link for
+  another device" (`/#key=...`) for the owner's key.
+* Grafana on cloud hosts: new `deploy/monitoring/` image (Grafana 11.2 + Prometheus 2.53 in one container) that
+  scrapes the deployed API over the internet (`ECIP_URL`) and is a second free service in `render.free.yaml`.
+  The chat page takes its Grafana link from the server (`GRAFANA_URL` via `/config/public`) and hides the link
+  when none is configured, instead of pointing every device at `localhost:3001`.
 * Added `render.free.yaml` (free plan, Groq LLM, hash embeddings).
 
 ## v3.0.0 — ChatGPT-style chat, single-pass streaming, monitoring, local + cloud packaging

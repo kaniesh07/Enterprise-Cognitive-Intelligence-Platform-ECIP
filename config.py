@@ -31,6 +31,7 @@ class Settings(BaseSettings):
     openai_api_key: str   = Field("",                       validation_alias="OPENAI_API_KEY")
     llm_model:      str   = Field("llama3.2:3b",            validation_alias="LLM_MODEL")
     max_tokens:     int   = Field(1024,                     validation_alias="MAX_TOKENS")
+    grafana_url:    str   = Field("",                       validation_alias="GRAFANA_URL")  # shown in the chat UI
     reasoning_effort: str = Field("",                       validation_alias="REASONING_EFFORT")  # low|medium|high
     temperature:    float = Field(0.3,                      validation_alias="TEMPERATURE")
     num_ctx:        int   = Field(4096,                     validation_alias="NUM_CTX")

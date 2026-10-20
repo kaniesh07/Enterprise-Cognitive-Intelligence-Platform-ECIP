@@ -1,5 +1,8 @@
 # Render FREE blueprint: Groq (free OpenAI-compatible API) for the LLM, no Ollama, no disk.
 # Free instances sleep when idle and have no persistent disk: uploaded documents are lost on restart.
+# Two free services: the ECIP app, and Grafana + Prometheus (monitoring) that watches it over the internet.
+# After the first deploy, copy each service's .onrender.com address into the other one's setting
+# (ECIP_URL on ecip-monitoring, GRAFANA_URL on ecip-free) and redeploy.
 services:
   - type: web
     name: ecip-free
@@ -24,5 +27,24 @@ services:
         value: hash            # Groq has no embeddings API; keyword (BM25) search does the work
       - key: SERVE_FRONTEND
         value: "true"
+      - key: PUBLIC_ROLE
+        value: reader          # anyone with the link can chat; uploading/deleting needs your API key
       - key: API_KEYS
         sync: false            # e.g. "a-long-random-key:admin"
+      - key: GRAFANA_URL
+        sync: false            # e.g. https://ecip-monitoring.onrender.com (shown as the Grafana link in the chat page)
+
+  - type: web
+    name: ecip-monitoring
+    runtime: docker
+    dockerfilePath: ./deploy/monitoring/Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: ECIP_URL
+        sync: false            # your app's address, e.g. https://ecip-free.onrender.com
+      - key: GRAFANA_PASSWORD
+        sync: false            # Grafana admin password (user: admin); viewers need no login
+      - key: SCRAPE_INTERVAL
+        value: 30s

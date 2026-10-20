@@ -110,6 +110,12 @@ faithfulness and retrieval scores, ingestion, index size, LLM / vector-DB up-gau
 Grafana is provisioned automatically (datasource + 27-panel dashboard, `monitoring/build_dashboard.py`);
 Prometheus alert rules are in `monitoring/alerts.yml`.
 
+**On a cloud host** (Render, Railway, Azure Container Apps…) deploy `deploy/monitoring/Dockerfile` as a second
+service (build context = repository root). It runs Grafana + Prometheus in one container, scrapes
+`$ECIP_URL/metrics` over the internet and serves Grafana on `$PORT` (anonymous viewers, admin password from
+`GRAFANA_PASSWORD`). Set `GRAFANA_URL` on the API so the chat page links to it on every device.
+`render.free.yaml` sets up both services on Render's free plan.
+
 ## Latency notes
 * One LLM call per question (was three: intent + reasoning + verifier); streaming starts immediately and the
   answer is generated once (the old stream endpoint generated it twice).
