@@ -211,6 +211,7 @@ dialog input,dialog select{width:100%;padding:9px 11px;border-radius:9px;border:
   <h3>Settings</h3>
   <label for="sKey">API key (X-API-Key)</label>
   <input id="sKey" type="password" autocomplete="off">
+  <button type="button" id="sCopyLink" style="margin:4px 0 8px">Copy login link for another device</button>
   <label for="sUser">User ID (for preferences &amp; rate limits)</label>
   <input id="sUser" type="text">
   <label for="sTheme">Theme</label>
@@ -241,6 +242,16 @@ let chats = store.get("ecip_chats", []);           // [{id,title,messages:[{role
 let currentId = store.get("ecip_current", null);
 let controller = null;        // AbortController of the in-flight stream
 
+// Login link: https://<host>/#key=<API key> stores the key on this device, then removes it from the address bar.
+function keyFromLink() { try {
+  const m = location.hash.match(/(?:^#|&)key=([^&]+)/);
+  if (!m) return false;
+  cfg.apiKey = decodeURIComponent(m[1]).replace(/:(admin|writer|reader)$/i, ""); store.set("ecip_cfg", cfg);
+  history.replaceState(null, "", location.pathname + location.search);
+  return true;
+} catch { return false; } }
+keyFromLink();
+addEventListener("hashchange", () => { if (keyFromLink()) { loadDocs(); toast("API key saved on this device"); } });
 const headers = (json = true) => Object.assign({ "X-API-Key": cfg.apiKey }, json ? { "Content-Type": "application/json" } : {});
 function toast(msg, ms = 2600) { const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), ms); }
 function saveChats() { store.set("ecip_chats", chats.slice(0, 100)); store.set("ecip_current", currentId); }
@@ -553,17 +564,29 @@ addEventListener("dragover", (e) => e.preventDefault());
 addEventListener("drop", (e) => { e.preventDefault(); dragDepth = 0; $("drop").classList.remove("on"); if (e.dataTransfer.files.length) upload([...e.dataTransfer.files]); });
 $("openSettings").onclick = (e) => { e.preventDefault(); $("sKey").value = cfg.apiKey; $("sUser").value = cfg.userId; $("sTheme").value = cfg.theme; $("sGrafana").value = cfg.grafana; $("settings").showModal(); };
 $("sCancel").onclick = () => $("settings").close();
+$("sCopyLink").onclick = async () => {
+  const k = $("sKey").value.trim().replace(/:(admin|writer|reader)$/i, "");
+  const link = location.origin + location.pathname + "#key=" + encodeURIComponent(k);
+  try { await navigator.clipboard.writeText(link); $("sCopyLink").textContent = "Copied - open it on the other device"; }
+  catch { prompt("Copy this link:", link); }
+};
 $("sSave").onclick = () => { cfg.apiKey = $("sKey").value.trim().replace(/^["']|["']$/g, "").replace(/:(admin|writer|reader)$/i, ""); cfg.userId = $("sUser").value.trim() || cfg.userId; cfg.theme = $("sTheme").value; cfg.grafana = $("sGrafana").value.trim();
   store.set("ecip_cfg", cfg); if (cfg.theme) document.documentElement.dataset.theme = cfg.theme; else delete document.documentElement.dataset.theme;
   $("settings").close(); setLinks(); loadDocs(); toast("Settings saved"); };
+let serverCfg = {};            // from /config/public: grafana_url, public_access, ...
+async function loadServerConfig() {
+  try { const r = await fetch(`${API}/config/public`, { cache: "no-store" }); if (r.ok) serverCfg = await r.json(); } catch {}
+}
 function setLinks() {
   $("apiDocs").href = `${API}/docs`;
-  $("grafana").href = cfg.grafana || `${location.protocol}//${location.hostname}:3001`;
+  const local = ["localhost", "127.0.0.1", "[::1]"].includes(location.hostname);
+  const g = cfg.grafana || serverCfg.grafana_url || (local ? `${location.protocol}//${location.hostname}:3001` : "");
+  $("grafana").href = g || "#"; $("grafana").style.display = g ? "" : "none";
 }
 
 (async function init() {
   if (innerWidth < 760) { $("side").classList.add("hidden"); $("showSide").style.display = ""; }
-  await resolveApi(); setLinks(); renderChatList(); renderThread();
+  await resolveApi(); await loadServerConfig(); setLinks(); renderChatList(); renderThread();
   health(); loadDocs(); setInterval(health, 30000);
 })();
 </script>
